@@ -1,0 +1,12 @@
+#include <stdio.h>
+
+int main()
+{
+    int memory[5] = {100,200,300,400,500};
+    int i;
+
+    for(i = 0; i < 5; i++)
+        printf("Block %d = %d\n", i + 1, memory[i]);
+
+    return 0;
+}
