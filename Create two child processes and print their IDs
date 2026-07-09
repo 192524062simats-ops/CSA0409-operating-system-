@@ -1,0 +1,17 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main()
+{
+    fork();
+    printf("PID: %d Parent: %d\n", getpid(), getppid());
+
+    fork();
+    printf("PID: %d Parent: %d\n", getpid(), getppid());
+
+    wait(NULL);
+    wait(NULL);
+
+    return 0;
+}
