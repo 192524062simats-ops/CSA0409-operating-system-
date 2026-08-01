@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int buffer[5];
+int front = 0;
+int rear = 0;
+
+int main()
+{
+    int i;
+
+    for(i = 1; i <= 5; i++)
+    {
+        buffer[rear] = i;
+        rear++;
+    }
+
+    for(i = front; i < rear; i++)
+        printf("%d ", buffer[i]);
+
+    return 0;
+}
