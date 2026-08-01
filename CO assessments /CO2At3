@@ -1,0 +1,28 @@
+q1. deadlock debugging
+condition causing deadlock:
+the deadlock occurs because both processes acquire the shared resources in different orders.
+•	process p1 locks r1 and waits for r2.
+•	process p2 locks r2 and waits for r1.
+this creates a circular wait, where each process is waiting for a resource held by the other, causing both to remain blocked indefinitely.
+optimization:
+use a fixed resource allocation order for all processes. for example, both p1 and p2 should always lock r1 first and then r2. this removes the circular wait condition and prevents deadlock without changing the process logic.
+q2. cpu utilization problem
+the frequent transitions ready → waiting → ready indicate that the processes are i/o-bound. they spend most of their time waiting for i/o operations instead of using the cpu, resulting in only 30% cpu utilization.
+optimizations:
+1.	use asynchronous (non-blocking) i/o so that processes can continue execution while waiting for i/o operations.
+2.	increase the degree of multiprogramming so that when one process is waiting for i/o, another ready process can utilize the cpu.
+these optimizations improve cpu utilization and overall system performance.
+q3. memory bottleneck debugging
+the performance degradation is caused by frequent page faults due to high memory usage from a large heap and multiple thread stacks. with 25 threads, each having its own stack, memory usage increases, leading to more page replacements and slower execution.
+optimizations:
+1.	use a thread pool to reduce the number of active threads and lower stack memory usage.
+2.	optimize heap memory by reusing objects, releasing unused memory, and minimizing unnecessary allocations to reduce page faults.
+q4. starvation debugging
+process p5 is placed in q3, the lowest-priority queue. since the scheduler always gives preference to q1 and q2, newly arriving higher-priority processes continuously delay p5. as a result, p5 never gets cpu time, causing starvation.
+optimization:
+implement the aging technique, which gradually increases the priority of processes that have waited for a long time. this ensures that p5 eventually moves to a higher-priority queue and receives cpu time, improving fairness.
+q5. context-switch overhead debugging
+the high number of context switches occurs because the time quantum (1 ms) is smaller than the average cpu burst time (2 ms). most threads are preempted before completing execution. additionally, frequent i/o operations cause threads to repeatedly move between the running and waiting states, increasing scheduler overhead.
+optimizations:
+1.	increase the time quantum to approximately 2–4 ms to reduce unnecessary preemption and context switches.
+2.	reduce i/o blocking by using asynchronous i/o, i/o buffering, or batch processing to decrease waiting frequency and improve cpu efficiency.
