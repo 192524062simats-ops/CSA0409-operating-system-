@@ -1,0 +1,359 @@
+Q1
+
+#include <stdio.h>
+
+int main()
+{
+    int base, limit, la;
+
+    printf("Enter Base Register Value: ");
+    scanf("%d", &base);
+
+    printf("Enter Limit Register Value: ");
+    scanf("%d", &limit);
+
+    printf("Enter Logical Address: ");
+    scanf("%d", &la);
+
+    if (la >= 0 && la < limit)
+        printf("\nValid Logical Address\nPhysical Address = %d", base + la);
+    else
+        printf("\nInvalid Logical Address!");
+
+    return 0;
+}
+
+OUTPUT
+
+Enter Base Register Value: 5000
+Enter Limit Register Value: 1000
+Enter Logical Address: 250
+
+Valid Logical Address
+Physical Address = 5250
+
+=== Code Execution Successful ===
+
+Q2
+
+#include <stdio.h>
+
+int main()
+{
+    int pt[10], n, size, page, offset;
+
+    printf("Enter number of pages: ");
+    scanf("%d", &n);
+
+    printf("Enter page size: ");
+    scanf("%d", &size);
+
+    for(int i=0;i<n;i++)
+    {
+        printf("Page %d: ", i);
+        scanf("%d", &pt[i]);
+    }
+
+    printf("Enter page number: ");
+    scanf("%d", &page);
+
+    printf("Enter offset: ");
+    scanf("%d", &offset);
+
+    if(page<n && offset<size)
+        printf("\nFrame Number = %d\nPhysical Address = %d", pt[page], pt[page]*size+offset);
+    else
+        printf("\nInvalid Page Number or Offset.");
+
+    return 0;
+}
+
+OUTPUT
+
+Enter number of pages: 4
+Enter page size: 1024
+Page 0: 5
+Page 1: 8
+Page 2: 2
+Page 3: 6
+Enter page number: 2
+Enter offset: 500
+
+Frame Number = 2
+Physical Address = 2548
+
+=== Code Execution Successful ===
+
+Q3
+
+#include <stdio.h>
+
+int main()
+{
+    int pt[10], pages, size, page, offset;
+
+    printf("Enter number of pages: ");
+    scanf("%d", &pages);
+
+    printf("Enter page size: ");
+    scanf("%d", &size);
+
+    for(int i=0;i<pages;i++)
+    {
+        printf("Page %d: ", i);
+        scanf("%d", &pt[i]);
+    }
+
+    printf("Enter logical page number: ");
+    scanf("%d", &page);
+
+    printf("Enter offset: ");
+    scanf("%d", &offset);
+
+    if(page<pages && offset<size)
+    {
+        printf("\nPage Number = %d", page);
+        printf("\nFrame Number = %d", pt[page]);
+        printf("\nPhysical Address = %d", pt[page]*size+offset);
+    }
+    else
+        printf("\nInvalid Logical Address.");
+
+    return 0;
+}
+
+OUTPUT
+
+Enter number of pages: 5
+Enter page size: 1000
+Page 0: 3
+Page 1: 6
+Page 2: 1
+Page 3: 4
+Page 4: 8
+Enter logical page number: 4
+Enter offset: 250
+
+Page Number = 4
+Frame Number = 8
+Physical Address = 8250
+
+=== Code Execution Successful ===
+
+Q4
+
+#include <stdio.h>
+
+int main()
+{
+    float mat, tlb, hit;
+
+    printf("Enter Memory Access Time (ns): ");
+    scanf("%f", &mat);
+
+    printf("Enter TLB Access Time (ns): ");
+    scanf("%f", &tlb);
+
+    printf("Enter TLB Hit Ratio (0 to 1): ");
+    scanf("%f", &hit);
+
+    printf("\nMemory Access Time without TLB = %.2f ns", 2*mat);
+    printf("\nEffective Memory Access Time with TLB = %.2f ns",
+           hit*(tlb+mat)+(1-hit)*(tlb+2*mat));
+
+    return 0;
+}
+
+OUTPUT
+
+Enter Memory Access Time (ns): 100
+Enter TLB Access Time (ns): 20
+Enter TLB Hit Ratio (0 to 1): 0.8
+
+Memory Access Time without TLB = 200.00 ns
+Effective Memory Access Time with TLB = 140.00 ns
+
+=== Code Execution Successful ===
+
+Q5
+
+#include <stdio.h>
+
+int main()
+{
+    int base, limit, la;
+
+    printf("Enter Base Register Value: ");
+    scanf("%d", &base);
+
+    printf("Enter Limit Register Value: ");
+    scanf("%d", &limit);
+
+    printf("Enter Logical Address: ");
+    scanf("%d", &la);
+
+    if(la>=0 && la<limit)
+        printf("\nAccess Granted\nPhysical Address = %d", base+la);
+    else
+        printf("\nAccess Denied! Invalid Logical Address.");
+
+    return 0;
+}
+
+OUTPUT
+
+Enter Base Register Value: 4000
+Enter Limit Register Value: 500
+Enter Logical Address: 250
+
+Access Granted
+Physical Address = 4250
+
+=== Code Execution Successful ===
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
