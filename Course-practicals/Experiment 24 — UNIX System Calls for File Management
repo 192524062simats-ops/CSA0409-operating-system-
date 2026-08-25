@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+
+int main()
+{
+    int fd;
+    char data[] = "Hello, this is UNIX file management.";
+    char buffer[100];
+    int n;
+
+    // Open/Create file
+    fd = open("sample.txt", O_CREAT | O_RDWR, 0644);
+
+    if (fd == -1)
+    {
+        printf("Error opening file.\n");
+        return 1;
+    }
+
+    printf("File opened successfully.\n");
+
+    // Write data to file
+    write(fd, data, strlen(data));
+    printf("Data written successfully.\n");
+
+    // Move file pointer to beginning
+    lseek(fd, 0, SEEK_SET);
+
+    // Read data from file
+    n = read(fd, buffer, sizeof(buffer) - 1);
+
+    if (n == -1)
+    {
+        printf("Error reading file.\n");
+        close(fd);
+        return 1;
+    }
+
+    buffer[n] = '\0';
+
+    printf("Data read from file: %s\n", buffer);
+
+    // Close file
+    close(fd);
+
+    printf("File closed successfully.\n");
+
+    return 0;
+}
