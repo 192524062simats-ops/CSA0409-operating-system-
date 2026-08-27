@@ -1,0 +1,143 @@
+1. File System Space Management
+#!/bin/bash
+
+THRESHOLD=80
+LOG_LIMIT=10
+
+USAGE=$(df /var | awk 'NR==2 {gsub("%","",$5); print $5}')
+
+if [ "$USAGE" -gt "$THRESHOLD" ]; then
+    echo "Disk usage is ${USAGE}%. Rotating logs..."
+
+    sudo logrotate -f /etc/logrotate.conf
+
+    USAGE=$(df /var | awk 'NR==2 {gsub("%","",$5); print $5}')
+
+    if [ "$USAGE" -gt "$THRESHOLD" ]; then
+        find /var/log -type f -name "*.log" -mtime +7 -exec gzip {} \;
+    fi
+fi
+
+echo "Current disk usage: ${USAGE}%"
+2. Kernel Optimization / CPU Scheduling
+#!/bin/bash
+
+echo "Current CPU usage:"
+top -b -n 1 | head -15
+
+echo "Process priorities:"
+ps -eo pid,pri,ni,cmd --sort=-%cpu | head
+
+echo "CPU statistics:"
+mpstat -P ALL 1 1
+
+echo "Virtual memory statistics:"
+vmstat 1 1
+
+PID=2500
+
+echo "Increasing priority of important process..."
+sudo renice -n -5 -p $PID
+
+echo "Setting CPU affinity..."
+sudo taskset -cp 0 $PID
+
+echo "Checking scheduling policy..."
+chrt -p $PID
+3. Processing 1 Million Log Entries
+#!/bin/bash
+
+LOG="application.log"
+
+echo "Processing log file..."
+
+echo "Top 10 frequent entries:"
+awk '{print $1}' "$LOG" | sort | uniq -c | sort -nr | head -10
+
+echo "Total WARNING entries:"
+grep -c "WARNING" "$LOG"
+
+echo "Total ERROR entries:"
+grep -c "ERROR" "$LOG"
+
+echo "Total log entries:"
+wc -l < "$LOG"
+
+echo "Processing completed."
+Optimized AWK Code
+#!/bin/bash
+
+LOG="application.log"
+
+awk '
+/WARNING/ { warning++ }
+/ERROR/   { error++ }
+
+END {
+    print "Warnings:", warning
+    print "Errors:", error
+}' "$LOG"
+4. Faulty Process Management
+#!/bin/bash
+
+echo "High CPU processes:"
+ps aux --sort=-%cpu | head
+
+PID=2450
+
+echo "Monitoring process $PID..."
+top -p $PID -b -n 1
+
+echo "Process details:"
+ps -p $PID -o pid,ppid,%cpu,%mem,cmd
+
+echo "Reducing process priority..."
+sudo renice 10 -p $PID
+
+echo "Restricting process to CPU core 0..."
+sudo taskset -cp 0 $PID
+
+echo "Checking process again..."
+ps -p $PID -o pid,ppid,%cpu,%mem,cmd
+
+echo "Checking critical service..."
+systemctl status service_name
+
+if ps -p $PID > /dev/null
+then
+    echo "Process is still running."
+else
+    echo "Process has stopped."
+fi
+5. RAM Allocation for 5 Virtual Machines
+#!/bin/bash
+
+TOTAL_RAM=16
+HOST_RAM=4
+VM_RAM=2
+NUMBER_OF_VMS=5
+
+AVAILABLE_RAM=$((TOTAL_RAM - HOST_RAM))
+
+echo "Total RAM: ${TOTAL_RAM} GB"
+echo "Host RAM: ${HOST_RAM} GB"
+echo "Available RAM for VMs: ${AVAILABLE_RAM} GB"
+
+for ((i=1; i<=NUMBER_OF_VMS; i++))
+do
+    if [ "$AVAILABLE_RAM" -ge "$VM_RAM" ]
+    then
+        echo "Allocating ${VM_RAM} GB to VM$i"
+        AVAILABLE_RAM=$((AVAILABLE_RAM - VM_RAM))
+    else
+        echo "Insufficient RAM for VM$i"
+    fi
+done
+
+echo "Remaining RAM buffer: ${AVAILABLE_RAM} GB"
+
+echo "Current memory usage:"
+free -h
+
+echo "Top memory-consuming processes:"
+ps aux --sort=-%mem | head
